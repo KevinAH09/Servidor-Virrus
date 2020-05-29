@@ -45,19 +45,6 @@ public class Servidor extends Conexion
                     }
                 }
                 task.cancel();
-            }else if(MainServidor.juegoMain.jugadores.size() == 6  && tic <= 60){
-                MainServidor.juegoMain.conexion = "l";
-                for (Jugador object : MainServidor.juegoMain.jugadores) {
-                    try {
-                        Conexion.HOST = object.ip;
-                        System.out.println("Iniciando cliente\n");
-                        Cliente cli = new Cliente(); //Se crea el cliente
-                        cli.startClient();
-                    } catch (IOException ex) {
-                        Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                task.cancel();
             }else if(MainServidor.juegoMain.jugadores.size() >= 3  && tic == 60 ){
                 MainServidor.juegoMain.conexion = "l";
                 for (Jugador object : MainServidor.juegoMain.jugadores) {
@@ -117,6 +104,7 @@ public class Servidor extends Conexion
                 
 //                 Empezamos dentro de 10ms y luego lanzamos la tarea cada 1000ms
                 if(MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")){
+                    MainServidor.juegoMain.conexion = "l";
                     Runnable nuevoCliente = new HiloCliente();
                     hilo = new Thread(nuevoCliente);
                     hilo.start(); 
