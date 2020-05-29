@@ -8,6 +8,7 @@ package viruss.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
+import java.util.Timer;
 import javax.print.DocFlavor;
 
 public class Servidor extends Conexion 
@@ -16,7 +17,7 @@ public class Servidor extends Conexion
         super("servidor");
     
     } //Se usa el constructor para servidor de Conexion
-
+    public Timer TimeInicioJuego = new Timer();
     public void startServer()//Método para iniciar el servidor
     {
         try
@@ -40,17 +41,14 @@ public class Servidor extends Conexion
 //                for(int i=0;i<lc.mazo.size();i++){
 //                    System.out.println(lc.mazo.get(i).color);
 //                }
-                
+                Runnable nuevoCliente = new HiloCliente();
+                Thread hilo = new Thread(nuevoCliente);
+                hilo.start();
                 System.out.println("Fin de la conexión");
                 ss.close();//Se finaliza la conexión con el cliente
                 cs.close();
                 inObjeto.close();
-                for (Jugador object : MainServidor.juegoMain.jugadores) {
-                    Conexion.HOST = object.ip;
-                    System.out.println("Iniciando cliente\n");
-                    Cliente cli = new Cliente(); //Se crea el cliente
-                    cli.startClient();
-                }
+               
                 
                
                 
