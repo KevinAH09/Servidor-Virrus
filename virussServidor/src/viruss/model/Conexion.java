@@ -25,12 +25,12 @@ public class Conexion
     {
         if(tipo.equalsIgnoreCase("servidor"))
         {
-            ss = new ServerSocket(5000);//Se crea el socket para el servidor en puerto 1234
+            ss = new ServerSocket(44440);//Se crea el socket para el servidor en puerto 1234
             cs = new Socket(); //Socket para el cliente
         }
         else
         {
-            cs = new Socket("25.101.246.19", 5000); //Socket para el cliente en localhost en puerto 1234
+            cs = new Socket(HOST, 5000); //Socket para el cliente en localhost en puerto 1234
         }
     }
 }
