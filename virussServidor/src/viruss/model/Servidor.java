@@ -108,6 +108,10 @@ public class Servidor extends Conexion
                     Runnable nuevoCliente = new HiloCliente();
                     hilo = new Thread(nuevoCliente);
                     hilo.start(); 
+                }else{
+                    Runnable nuevoCliente = new HiloCliente();
+                    hilo = new Thread(nuevoCliente);
+                    hilo.start();
                 }
                     
                 System.out.println("Fin de la conexión");
