@@ -12,12 +12,13 @@ import viruss.model.Conexion;
 //Clase principal que hará uso del servidor
 public class MainServidor
 {
+   public static Boolean band = TRUE;
    public static Juego juegoMain;
    public static void main(String[] args) throws IOException
     {
         
         juegoMain = new Juego();
-        while(TRUE){
+        while(band){
             Servidor serv = new Servidor(); //Se crea el servidor
 
             System.out.println("Iniciando servidor\n");

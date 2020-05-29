@@ -21,16 +21,16 @@ public class HiloCliente implements Runnable{
     
     @Override
     public void run() {
-    for (Jugador object : MainServidor.juegoMain.jugadores) {
-        try {
-            Conexion.HOST = object.ip;
-            System.out.println("Iniciando cliente\n");
-            Cliente cli = new Cliente(); //Se crea el cliente
-            cli.startClient();
-        } catch (IOException ex) {
-            Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+        for (Jugador object : MainServidor.juegoMain.jugadores) {
+            try {
+                Conexion.HOST = object.ip;
+                System.out.println("Iniciando cliente\n");
+                Cliente cli = new Cliente(); //Se crea el cliente
+                cli.startClient();
+            } catch (IOException ex) {
+                Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }
 
     }
     
