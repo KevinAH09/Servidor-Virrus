@@ -95,17 +95,7 @@ public class InicioController extends Controller implements Initializable {
             resta--;
         }
         
-            MainServidor.juegoMain = new Juego();
-            MainServidor.juegoMain.setMazo(listaRandom);
-            MainServidor.juegoMain.setCementerio(listaCementerio);
             
-            Jugador jugador1 = new Jugador("bosco","1");
-            Jugador jugador2 = new Jugador("kevin","2");
-            Jugador jugador3 = new Jugador("gustavo","3");
-            
-            MainServidor.juegoMain.jugadores.add(jugador1);
-            MainServidor.juegoMain.jugadores.add(jugador2);
-            MainServidor.juegoMain.jugadores.add(jugador3);
 //            Cliente cli;
 //            try {
 //                cli = new Cliente(); //Se crea el cliente

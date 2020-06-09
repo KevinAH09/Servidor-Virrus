@@ -8,7 +8,9 @@ package viruss.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import static java.lang.Boolean.FALSE;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -17,6 +19,8 @@ import javafx.concurrent.Task;
 
 public class Servidor extends Conexion 
 {
+    private List <Carta> lista = new ArrayList();
+    private List <Carta> listaRandom =  new ArrayList();
     boolean cerrojo = true;
     Thread hilo;
     Timer timer = new Timer();
@@ -30,7 +34,7 @@ public class Servidor extends Conexion
 
             tic++;
             System.out.println(tic);
-            if(tic == 60 && MainServidor.juegoMain.jugadores.size() < 3  ){
+            if(tic == 10 && MainServidor.juegoMain.jugadores.size() < 3  ){
                 MainServidor.band = FALSE;
                 System.out.println("ServidorCerrado");
                 MainServidor.juegoMain.conexion = "o";
@@ -45,7 +49,8 @@ public class Servidor extends Conexion
                     }
                 }
                 task.cancel();
-            }else if(MainServidor.juegoMain.jugadores.size() >= 3  && tic == 60 ){
+            }else if(MainServidor.juegoMain.jugadores.size() >= 3  && tic == 10 && MainServidor.juegoMain.jugadores.size() != 6 ){
+                repartirCartas();
                 MainServidor.juegoMain.conexion = "l";
                 for (Jugador object : MainServidor.juegoMain.jugadores) {
                     try {
@@ -64,11 +69,11 @@ public class Servidor extends Conexion
     };
     public Servidor() throws IOException{
         super("servidor");
-    
     } //Se usa el constructor para servidor de Conexion
     
     public void startServer()//Método para iniciar el servidor
     {
+        asignarCartas();
         try
         {
                 System.out.println("Esperando..."); //Esperando conexión
@@ -102,8 +107,8 @@ public class Servidor extends Conexion
 //                }
                 
                 
-//                 Empezamos dentro de 10ms y luego lanzamos la tarea cada 1000ms
                 if(MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")){
+                    repartirCartas();
                     MainServidor.juegoMain.conexion = "l";
                     Runnable nuevoCliente = new HiloCliente();
                     hilo = new Thread(nuevoCliente);
@@ -127,6 +132,111 @@ public class Servidor extends Conexion
         catch (Exception e)
         {
             System.out.println(e.getMessage());
+        }
+    }
+    
+    public void asignarCartas(){
+        crearCartas();
+        Random o = new Random();
+        int aux;
+        int resta=67;
+        
+        while(lista!=null&&resta>0)
+        {
+            Carta a;
+            aux=o.nextInt(resta);
+            a=lista.get(aux);
+            listaRandom.add(a);
+            
+            lista.remove(a);
+            resta--;
+        }
+        MainServidor.juegoMain.mazo = listaRandom;
+        
+    }
+    public void repartirCartas(){
+        
+        for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
+            for (int i = 0;i<3;i++){
+                jugadore.mazo1.add(MainServidor.juegoMain.mazo.get(i));
+                MainServidor.juegoMain.mazo.remove(MainServidor.juegoMain.mazo.get(i));
+            } 
+        }
+    }
+    public void crearCartas()
+    {
+        for (int i = 0; i < 68; i++) {//organos
+            if (i < 21) {
+                if (i < 5) {
+                    lista.add(new Carta("viruss/recursos/CORAZON.jpg","Organos", 1, 195, 130));//corazon
+                }
+                if (i >= 5 && i < 10) {
+                    lista.add(new Carta("viruss/recursos/ESTOMAGO.jpg","Organos", 2, 195, 130));//estomago
+                }
+                if (i >= 10 && i < 15) {
+                    lista.add(new Carta("viruss/recursos/CEREBRO.jpg","Organos", 3, 195, 130));//cerebor
+                }
+                if (i >= 15 && i < 20) {
+                    lista.add(new Carta("viruss/recursos/HUESO.jpg","Organos", 4, 195, 130));//hueso
+                }
+                if (i >= 20 && i < 21) {
+                    lista.add(new Carta("viruss/recursos/CUERPO.jpg","Organos", 5, 195, 130));//comodin
+                }
+            }
+            if(i>=21 && i<38)//virus
+            {
+                if (i < 25) {
+                    lista.add(new Carta("viruss/recursos/ROJIVURUS.jpg","Virus", 1, 195, 130));//ROJIVIRUS
+                }
+                if (i >= 25 && i < 29) {
+                    lista.add(new Carta("viruss/recursos/VERDON EL VIRUS.jpg","Virus", 2, 195, 130));//VERDON EL VIRUS
+                }
+                if (i >= 29 && i < 33) {
+                    lista.add(new Carta("viruss/recursos/VIRUBLU.jpg","Virus", 3, 195, 130));//VIRUBLU
+                }
+                if (i >= 33 && i < 37) {
+                    lista.add(new Carta("viruss/recursos/YELLVIRUS.jpg","Virus", 4, 195, 130));//YELLVIRUS
+                }
+                if (i >= 37 && i < 38) {
+                    lista.add(new Carta("viruss/recursos/COVID-19.jpg","Virus", 5, 195, 130));//COVID-19
+                }
+            }
+            if(i>=38 && i<58)//medicinas
+            {
+                if (i < 42) {
+                    lista.add(new Carta("viruss/recursos/BOTIQUIN.jpg","Medicinas", 1, 195, 130));//BOTIQUIN
+                }
+                if (i >= 42 && i < 46) {
+                    lista.add(new Carta("viruss/recursos/VACUNA.jpg","Medicinas", 2, 195, 130));//VACUNA
+                }
+                if (i >= 46 && i < 50) {
+                    lista.add(new Carta("viruss/recursos/ANTISUERO.jpg","Medicinas", 3, 195, 130));//ANTISUERO
+                }
+                if (i >= 50 && i < 54) {
+                    lista.add(new Carta("viruss/recursos/CURITAS.jpg","Medicinas", 4, 195, 130));//CURITAS
+                }
+                if (i >= 54 && i < 58) {
+                    lista.add(new Carta("viruss/recursos/HOSPITAL.jpg","Medicinas", 5, 195, 130));//HOSPITAL
+                }
+            }
+            if(i>=58 && i<69)//tratamientos
+            {
+                if (i < 60) {
+                    lista.add(new Carta("viruss/recursos/TRANSPLANTE.jpg","Tratamientos", 1, 195, 130));//Transplante
+                }
+                if (i >= 60 && i < 63) {
+                    lista.add(new Carta("viruss/recursos/LADRON DE ORGANOS.jpg","Tratamientos", 2, 195, 130));//Ladrón de órganos
+                }
+                if (i >= 63 && i < 66) {
+                    lista.add(new Carta("viruss/recursos/CONTAGIO.jpg","Tratamientos", 3, 195, 130));//Contagio
+                }
+                if (i >= 66 && i < 67) {
+                    lista.add(new Carta("viruss/recursos/GUANTES DE LATEX.jpg","Tratamientos", 4, 195, 130));//Guante de látex
+                }
+                if (i >= 67 && i < 68) {
+                    lista.add(new Carta("viruss/recursos/ERROR MEDICO.jpg","Tratamientos", 5, 195, 130));//Error médico
+                }
+            }
         }
     }
 }

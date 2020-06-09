@@ -14,7 +14,7 @@ public class Carta extends ImageView implements Serializable{
     public int altura;
     public int ancho;
     public String estado;
-    
+    public String img;
     public static Carta CartaAux;
     List <Carta> lista;
     
@@ -29,8 +29,9 @@ public class Carta extends ImageView implements Serializable{
         this.setFitWidth(ancho);
         this.tipoCarta = tipoCarta;
         this.color = color;
-//        this.img = new Image(img);
-        
+        this.img = img;
+    }
+    public void setImg(){
         if(tipoCarta.equals("Virus"))
         {
             
@@ -135,7 +136,6 @@ public class Carta extends ImageView implements Serializable{
            
         });
     }
-    
     public void jugar()
     {
         
