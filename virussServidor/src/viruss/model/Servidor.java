@@ -31,39 +31,41 @@ public class Servidor extends Conexion
         @Override
         public void run()
         {
-
-            tic++;
-            System.out.println(tic);
-            if(tic == 10 && MainServidor.juegoMain.jugadores.size() < 3  ){
-                MainServidor.band = FALSE;
-                System.out.println("ServidorCerrado");
-                MainServidor.juegoMain.conexion = "o";
-                for (Jugador object : MainServidor.juegoMain.jugadores) {
-                    try {
-                        Conexion.HOST = object.ip;
-                        System.out.println("Iniciando cliente\n");
-                        Cliente cli = new Cliente(); //Se crea el cliente
-                        cli.startClient();
-                    } catch (IOException ex) {
-                        Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+            if(!MainServidor.juegoMain.conexion.equals("l")){
+               tic++;
+                System.out.println(tic);
+                if(tic == 10 && MainServidor.juegoMain.jugadores.size() < 1  ){
+                    MainServidor.band = FALSE;
+                    System.out.println("ServidorCerrado");
+                    MainServidor.juegoMain.conexion = "o";
+                    for (Jugador object : MainServidor.juegoMain.jugadores) {
+                        try {
+                            Conexion.HOST = object.ip;
+                            System.out.println("Iniciando cliente\n");
+                            Cliente cli = new Cliente(); //Se crea el cliente
+                            cli.startClient();
+                        } catch (IOException ex) {
+                            Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                }
-                task.cancel();
-            }else if(MainServidor.juegoMain.jugadores.size() >= 3  && tic == 10 && MainServidor.juegoMain.jugadores.size() != 6 ){
-                repartirCartas();
-                MainServidor.juegoMain.conexion = "l";
-                for (Jugador object : MainServidor.juegoMain.jugadores) {
-                    try {
-                        Conexion.HOST = object.ip;
-                        System.out.println("Iniciando cliente\n");
-                        Cliente cli = new Cliente(); //Se crea el cliente
-                        cli.startClient();
-                    } catch (IOException ex) {
-                        Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    task.cancel();
+                }else if(MainServidor.juegoMain.jugadores.size() >= 2  && tic == 10 && MainServidor.juegoMain.jugadores.size() != 6 ){
+                    repartirCartas();
+                    MainServidor.juegoMain.conexion = "l";
+                    for (Jugador object : MainServidor.juegoMain.jugadores) {
+                        try {
+                            Conexion.HOST = object.ip;
+                            System.out.println("Iniciando cliente\n");
+                            Cliente cli = new Cliente(); //Se crea el cliente
+                            cli.startClient();
+                        } catch (IOException ex) {
+                            Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                }
-                task.cancel();
+                    task.cancel();
+                } 
             }
+            
             
         }
     };
@@ -81,52 +83,58 @@ public class Servidor extends Conexion
                 System.out.println("Cliente en línea");
                 
                 ObjectInputStream inObjeto = new ObjectInputStream( cs.getInputStream());
-                Juego lc =(Juego) inObjeto.readObject();          
+                Juego lc =(Juego) inObjeto.readObject();
+                
                 System.out.println(cs.getInetAddress().toString());
                 String ip = cs.getInetAddress().toString();
                 String replaceAll = ip.replaceAll("/", "");
                 
-                if(MainServidor.juegoMain.jugadores.isEmpty()){
-                    
+                String name = "";
+                if (MainServidor.juegoMain.conexion.equals("l")){
                     MainServidor.juegoMain = lc;
-                    MainServidor.juegoMain.jugadores.get(0).setIp(replaceAll);
-                    MainServidor.juegoMain.jugadores.get(1).setIp(replaceAll);
-                    MainServidor.juegoMain.jugadores.get(2).setIp(replaceAll);
-                    timer.schedule(task, 10, 1000);
-                    
-                }else{
-                    lc.jugadores.get(0).ip=replaceAll;
-                    lc.jugadores.get(1).ip=replaceAll;
-                    lc.jugadores.get(2).ip=replaceAll;
-                    MainServidor.juegoMain.jugadores.add(lc.jugadores.get(0));
-                    MainServidor.juegoMain.jugadores.add(lc.jugadores.get(1)); 
-                    MainServidor.juegoMain.jugadores.add(lc.jugadores.get(2)); 
-                }
-//                for(int i=0;i<lc.mazo.size();i++){
-//                    System.out.println(lc.mazo.get(i).color);
-//                }
-                
-                
-                if(MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")){
-                    repartirCartas();
-                    MainServidor.juegoMain.conexion = "l";
-                    Runnable nuevoCliente = new HiloCliente();
-                    hilo = new Thread(nuevoCliente);
-                    hilo.start(); 
-                }else{
-                    Runnable nuevoCliente = new HiloCliente();
+                    if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size()-1){
+                        MainServidor.juegoMain.turno = 0;
+                    }else{
+                        MainServidor.juegoMain.turno +=1;
+                    }
+                    for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
+                        System.out.println(jugadore.nickname);
+                        System.out.println(jugadore.mazo1);
+                        System.out.println(jugadore.mazo2);
+                        if (jugadore.ip.equals(replaceAll)){
+                            name = jugadore.getNickname();
+                        }
+                    }
+                    Runnable nuevoCliente = new HiloCliente(name);
                     hilo = new Thread(nuevoCliente);
                     hilo.start();
+                }else{
+                    if(MainServidor.juegoMain.jugadores.isEmpty()){
+                        lc.jugadores.get(0).ip = replaceAll;
+                        MainServidor.juegoMain = lc;
+                        timer.schedule(task, 10, 1000);
+                    }else{
+                        lc.jugadores.get(0).ip = replaceAll;
+                        MainServidor.juegoMain.jugadores.add(lc.jugadores.get(0)); 
+                    }  
+                    if(MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")){
+                        repartirCartas();
+                        MainServidor.juegoMain.conexion = "l";
+                        Runnable nuevoCliente = new HiloCliente(name);
+                        hilo = new Thread(nuevoCliente);
+                        hilo.start(); 
+                    }else{
+                        Runnable nuevoCliente = new HiloCliente(name);
+                        hilo = new Thread(nuevoCliente);
+                        hilo.start();
+                    }
                 }
-                    
+                
+                  
                 System.out.println("Fin de la conexión");
                 ss.close();//Se finaliza la conexión con el cliente
                 cs.close();
-                inObjeto.close();
-               
-                        
-               
-                
+                inObjeto.close();       
             
         }
         catch (Exception e)
@@ -155,7 +163,6 @@ public class Servidor extends Conexion
         
     }
     public void repartirCartas(){
-        
         for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
             for (int i = 0;i<3;i++){
                 jugadore.mazo1.add(MainServidor.juegoMain.mazo.get(i));
