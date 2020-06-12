@@ -24,7 +24,7 @@ public class Carta extends ImageView implements Serializable{
     public Carta() {
     }
     
-    public Carta(String img,String tipoCarta,int color,int altura,int ancho){
+    public Carta(String tipoCarta,int color,int altura,int ancho){
         this.setFitHeight(altura);
         this.setFitWidth(ancho);
         this.tipoCarta = tipoCarta;
