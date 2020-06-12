@@ -25,7 +25,6 @@ public class HiloCliente implements Runnable{
         for (Jugador object : MainServidor.juegoMain.jugadores) {
             try {
                 if(!object.nickname.equals(JugPas)){
-                    System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                     Conexion.HOST = object.ip;
                     System.out.println("Iniciando cliente\n");
                     Cliente cli = new Cliente(); //Se crea el cliente

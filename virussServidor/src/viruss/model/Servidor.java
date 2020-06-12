@@ -94,13 +94,14 @@ public class Servidor extends Conexion
                     MainServidor.juegoMain = lc;
                     if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size()-1){
                         MainServidor.juegoMain.turno = 0;
+                       
                     }else{
-                        MainServidor.juegoMain.turno +=1;
+                        MainServidor.juegoMain.turno++;
                     }
+                    System.out.println(MainServidor.juegoMain.turno);
                     for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
                         System.out.println(jugadore.nickname);
-                        System.out.println(jugadore.mazo1);
-                        System.out.println(jugadore.mazo2);
+                        System.out.println(jugadore.ip);
                         if (jugadore.ip.equals(replaceAll)){
                             name = jugadore.getNickname();
                         }
