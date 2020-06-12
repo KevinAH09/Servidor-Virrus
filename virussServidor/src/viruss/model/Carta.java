@@ -10,6 +10,7 @@ import viruss.controller.InicioController;
 public class Carta extends ImageView implements Serializable{
     private static final long serialVersionUID = 6529685098267757690L;
     private String tipoCarta;
+    public int idcarta;
     public int color;
     public int altura;
     public int ancho;
@@ -24,7 +25,8 @@ public class Carta extends ImageView implements Serializable{
     public Carta() {
     }
     
-    public Carta(String tipoCarta,int color,int altura,int ancho){
+    public Carta(int id,String tipoCarta,int color,int altura,int ancho){
+        this.idcarta = id;
         this.setFitHeight(altura);
         this.setFitWidth(ancho);
         this.tipoCarta = tipoCarta;
