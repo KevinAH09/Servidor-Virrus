@@ -13,28 +13,35 @@ import java.util.logging.Logger;
  *
  * @author colo7
  */
-public class HiloCliente implements Runnable{
+public class HiloCliente implements Runnable {
+
+    
     public String JugPas;
+
     public HiloCliente(String name) {
         this.JugPas = name;
     }
 
-    
     @Override
     public void run() {
-        for (Jugador object : MainServidor.juegoMain.jugadores) {
-            try {
-                if(!object.nickname.equals(JugPas)){
-                    Conexion.HOST = object.ip;
-                    System.out.println("Iniciando cliente\n");
-                    Cliente cli = new Cliente(); //Se crea el cliente
-                    cli.startClient();
+        if (Servidor.semaforo) {
+            Servidor.semaforo = false;
+            for (Jugador object : MainServidor.juegoMain.jugadores) {
+                try {
+                    if (!object.nickname.equals(JugPas)) {
+                        Conexion.HOST = object.ip;
+                        System.out.println("Iniciando cliente\n");
+                        Cliente cli = new Cliente(); //Se crea el cliente
+                        cli.startClient();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(HiloCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
+            Servidor.semaforo = true;
         }
 
     }
-    
+
 }
