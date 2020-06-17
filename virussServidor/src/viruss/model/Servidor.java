@@ -88,8 +88,10 @@ public class Servidor extends Conexion {
             String replaceAll = ip.replaceAll("/", "");
 
             String name = "";
-            if (MainServidor.juegoMain.conexion.equals("GL")) {
+            if (lc.conexion.equals("GL")) {
                 MainServidor.juegoMain = lc;
+                System.out.println("GuanteLatex");
+                System.out.println(MainServidor.juegoMain.turno);
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
                     System.out.println(jugadore.nickname);
                     System.out.println(jugadore.mazo2);
@@ -100,8 +102,7 @@ public class Servidor extends Conexion {
                 Runnable nuevoCliente = new HiloCliente(name);
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
-
-            } else if (MainServidor.juegoMain.conexion.equals("l")) {
+            } else if (lc.conexion.equals("l")) {
                 MainServidor.juegoMain = lc;
                 if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size() - 1) {
                     MainServidor.juegoMain.turno = 0;
@@ -109,6 +110,7 @@ public class Servidor extends Conexion {
                 } else {
                     MainServidor.juegoMain.turno++;
                 }
+
                 System.out.println(MainServidor.juegoMain.turno);
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
                     System.out.println(jugadore.nickname);
@@ -247,7 +249,7 @@ public class Servidor extends Conexion {
 //                    lista.add(new Carta(i, "Tratamientos", 3, 195, 130));//Contagio
 //                }
 //                if (i >= 66 && i < 67) {
-                    lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
+                lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
 //                }
 //                if (i >= 67 && i < 68) {
 //                    lista.add(new Carta(i, "Tratamientos", 5, 195, 130));//Error médico
