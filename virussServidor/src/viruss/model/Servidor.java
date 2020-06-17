@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javafx.concurrent.Task;
 
 public class Servidor extends Conexion {
+
     public static boolean semaforo = true;
     private List<Carta> lista = new ArrayList();
     private List<Carta> listaRandom = new ArrayList();
@@ -87,7 +88,20 @@ public class Servidor extends Conexion {
             String replaceAll = ip.replaceAll("/", "");
 
             String name = "";
-            if (MainServidor.juegoMain.conexion.equals("l")) {
+            if (MainServidor.juegoMain.conexion.equals("GL")) {
+                MainServidor.juegoMain = lc;
+                for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
+                    System.out.println(jugadore.nickname);
+                    System.out.println(jugadore.mazo2);
+                    if (jugadore.ip.equals(replaceAll)) {
+                        name = jugadore.getNickname();
+                    }
+                }
+                Runnable nuevoCliente = new HiloCliente(name);
+                hilo = new Thread(nuevoCliente);
+                hilo.start();
+
+            } else if (MainServidor.juegoMain.conexion.equals("l")) {
                 MainServidor.juegoMain = lc;
                 if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size() - 1) {
                     MainServidor.juegoMain.turno = 0;
@@ -223,21 +237,21 @@ public class Servidor extends Conexion {
             }
             if (i >= 58 && i < 69)//tratamientos
             {
-                if (i < 60) {
-                    lista.add(new Carta(i, "Tratamientos", 1, 195, 130));//Transplante
-                }
-                if (i >= 60 && i < 63) {
-                    lista.add(new Carta(i, "Tratamientos", 2, 195, 130));//Ladrón de órganos
-                }
-                if (i >= 63 && i < 66) {
-                    lista.add(new Carta(i, "Tratamientos", 3, 195, 130));//Contagio
-                }
-                if (i >= 66 && i < 67) {
+//                if (i < 60) {
+//                    lista.add(new Carta(i, "Tratamientos", 1, 195, 130));//Transplante
+//                }
+//                if (i >= 60 && i < 63) {
+//                    lista.add(new Carta(i, "Tratamientos", 2, 195, 130));//Ladrón de órganos
+//                }
+//                if (i >= 63 && i < 66) {
+//                    lista.add(new Carta(i, "Tratamientos", 3, 195, 130));//Contagio
+//                }
+//                if (i >= 66 && i < 67) {
                     lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
-                }
-                if (i >= 67 && i < 68) {
-                    lista.add(new Carta(i, "Tratamientos", 5, 195, 130));//Error médico
-                }
+//                }
+//                if (i >= 67 && i < 68) {
+//                    lista.add(new Carta(i, "Tratamientos", 5, 195, 130));//Error médico
+//                }
             }
         }
     }
