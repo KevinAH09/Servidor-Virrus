@@ -248,10 +248,10 @@ public class Servidor extends Conexion {
 //                    lista.add(new Carta(i, "Tratamientos", 2, 195, 130));//Ladrón de órganos
 //                }
 //                if (i >= 63 && i < 66) {
-//                    lista.add(new Carta(i, "Tratamientos", 3, 195, 130));//Contagio
+                    lista.add(new Carta(i, "Tratamientos", 3, 195, 130));//Contagio
 //                }
 //                if (i >= 66 && i < 67) {
-                lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
+//                lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
 //                }
 //                if (i >= 67 && i < 68) {
 //                    lista.add(new Carta(i, "Tratamientos", 5, 195, 130));//Error médico
