@@ -100,7 +100,7 @@ public class Servidor extends Conexion {
                     }
                 }
                 System.out.println(MainServidor.juegoMain.turno);
-                Runnable nuevoCliente = new HiloCliente(name);
+                Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else if (lc.conexion.equals("l")) {
@@ -121,7 +121,7 @@ public class Servidor extends Conexion {
                         name = jugadore.getNickname();
                     }
                 }
-                Runnable nuevoCliente = new HiloCliente(name);
+                Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else {
@@ -136,11 +136,11 @@ public class Servidor extends Conexion {
                 if (MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")) {
                     repartirCartas();
                     MainServidor.juegoMain.conexion = "l";
-                    Runnable nuevoCliente = new HiloCliente(name);
+                    Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
                     hilo = new Thread(nuevoCliente);
                     hilo.start();
                 } else {
-                    Runnable nuevoCliente = new HiloCliente(name);
+                    Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
                     hilo = new Thread(nuevoCliente);
                     hilo.start();
                 }

@@ -15,17 +15,28 @@ import java.util.List;
  */
 public class Juego implements Serializable {
 
+    private static final long serialVersionUID = 6529685098267757694L;
     public List<Jugador> jugadores = new ArrayList<>();
     public int turno;
-    public String conexion ;//w=esperar, o=tiempo excedido, l=juego listo, g = juego ganado
+    public String conexion;//w=esperar, o=tiempo excedido, l=juego listo, g = juego ganado
     public List<Carta> mazo = new ArrayList<>();
     public List<Carta> cementerio = new ArrayList<>();
+    public List<Carta> cementerioAux = new ArrayList<>();
 
     public Juego() {
         conexion = "w";
         jugadores = new ArrayList<>();
         mazo = new ArrayList<>();
         cementerio = new ArrayList<>();
+        cementerioAux = new ArrayList<>();
+    }
+
+    public List<Carta> getCementerioAux() {
+        return cementerioAux;
+    }
+
+    public void setCementerioAux(List<Carta> cementerioAux) {
+        this.cementerioAux = cementerioAux;
     }
 
     public List<Carta> getCementerio() {

@@ -17,16 +17,17 @@ public class HiloCliente implements Runnable {
 
     
     public String JugPas;
-
-    public HiloCliente(String name) {
+    public Juego juego ;
+    public HiloCliente(String name,Juego j) {
         this.JugPas = name;
+        this.juego = j;
     }
 
     @Override
     public void run() {
         if (Servidor.semaforo) {
             Servidor.semaforo = false;
-            for (Jugador object : MainServidor.juegoMain.jugadores) {
+            for (Jugador object : juego.jugadores) {
                 try {
                     if (!object.nickname.equals(JugPas)) {
                         Conexion.HOST = object.ip;
