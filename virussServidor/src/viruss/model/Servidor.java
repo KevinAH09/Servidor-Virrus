@@ -99,10 +99,12 @@ public class Servidor extends Conexion {
                         name = jugadore.getNickname();
                     }
                 }
+                System.out.println(MainServidor.juegoMain.turno);
                 Runnable nuevoCliente = new HiloCliente(name);
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else if (lc.conexion.equals("l")) {
+                System.out.println("Normal");
                 MainServidor.juegoMain = lc;
                 if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size() - 1) {
                     MainServidor.juegoMain.turno = 0;
