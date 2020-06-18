@@ -76,10 +76,10 @@ public class Servidor extends Conexion {
     {
         asignarCartas();
         try {
-            System.out.println("Esperando..."); //Esperando conexión
+            System.out.println("Esperando jugadores..."); //Esperando conexión
             cs = ss.accept(); //Accept comienza el socket y espera una conexión desde un cliente
-            System.out.println("Cliente en línea");
-
+            System.out.println("Jugador en línea");
+            System.out.println("---------------------------------------");
             ObjectInputStream inObjeto = new ObjectInputStream(cs.getInputStream());
             Juego lc = (Juego) inObjeto.readObject();
 
@@ -88,23 +88,22 @@ public class Servidor extends Conexion {
             String replaceAll = ip.replaceAll("/", "");
 
             String name = "";
-            if (lc.conexion.equals("GL")) {
+            if (lc.conexion.equals("G")) {
+
+            } else if (lc.conexion.equals("GL")) {
                 MainServidor.juegoMain = lc;
-                System.out.println("GuanteLatex");
-                System.out.println(MainServidor.juegoMain.turno);
+
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                    System.out.println(jugadore.nickname);
-                    System.out.println(jugadore.mazo2);
+                    System.out.println("Jugador : " + jugadore.nickname + " conectado");
                     if (jugadore.ip.equals(replaceAll)) {
                         name = jugadore.getNickname();
                     }
                 }
-                System.out.println(MainServidor.juegoMain.turno);
-                Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
+                System.out.println("Turno: " + MainServidor.juegoMain.turno);
+                Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else if (lc.conexion.equals("l")) {
-                System.out.println("Normal");
                 MainServidor.juegoMain = lc;
                 if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size() - 1) {
                     MainServidor.juegoMain.turno = 0;
@@ -113,15 +112,14 @@ public class Servidor extends Conexion {
                     MainServidor.juegoMain.turno++;
                 }
 
-                System.out.println(MainServidor.juegoMain.turno);
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                    System.out.println(jugadore.nickname);
-                    System.out.println(jugadore.mazo2);
+                    System.out.println("Jugador : " + jugadore.nickname + " conectado");
                     if (jugadore.ip.equals(replaceAll)) {
                         name = jugadore.getNickname();
                     }
                 }
-                Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
+                System.out.println("Turno: " + MainServidor.juegoMain.turno);
+                Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else {
@@ -136,17 +134,17 @@ public class Servidor extends Conexion {
                 if (MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")) {
                     repartirCartas();
                     MainServidor.juegoMain.conexion = "l";
-                    Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
+                    Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);
                     hilo = new Thread(nuevoCliente);
                     hilo.start();
                 } else {
-                    Runnable nuevoCliente = new HiloCliente(name,MainServidor.juegoMain);
+                    Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);
                     hilo = new Thread(nuevoCliente);
                     hilo.start();
                 }
             }
 
-            System.out.println("Fin de la conexión");
+          
             ss.close();//Se finaliza la conexión con el cliente
             cs.close();
             inObjeto.close();
@@ -251,7 +249,7 @@ public class Servidor extends Conexion {
                     lista.add(new Carta(i, "Tratamientos", 3, 195, 130));//Contagio
                 }
                 if (i >= 66 && i < 67) {
-                lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
+                    lista.add(new Carta(i, "Tratamientos", 4, 195, 130));//Guante de látex
                 }
                 if (i >= 67 && i < 68) {
                     lista.add(new Carta(i, "Tratamientos", 5, 195, 130));//Error médico

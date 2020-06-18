@@ -5,12 +5,14 @@
  */
 package viruss;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import viruss.model.MainServidor;
 import viruss.util.FlowController;
 
 /**
@@ -21,18 +23,15 @@ public class Viruss extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        FlowController.getInstance().InitializeFlow(stage,null);
-        stage.setTitle("Virus");
-        stage.initStyle(StageStyle.DECORATED);
-        FlowController.getInstance().goMain();
-        FlowController.getInstance().goView("Menu");
+        
     }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args) throws IOException {
+        MainServidor.main(args);
+       
     }
     
 }
