@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import viruss.model.MainServidor;
-import viruss.util.FlowController;
 
 /**
  *

@@ -32,15 +32,14 @@ public class Servidor extends Conexion {
         public void run() {
             if (!MainServidor.juegoMain.conexion.equals("l")) {
                 tic++;
-                System.out.println(tic);
-                if (tic == 10 && MainServidor.juegoMain.jugadores.size() < 1) {
+                System.out.println(tic + " segundos");
+                if (tic == 10 && MainServidor.juegoMain.jugadores.size() <= 1) {
                     MainServidor.band = FALSE;
-                    System.out.println("ServidorCerrado");
+                    System.out.println("Servidor cerrado se agoto el tiempo");
                     MainServidor.juegoMain.conexion = "o";
                     for (Jugador object : MainServidor.juegoMain.jugadores) {
                         try {
                             Conexion.HOST = object.ip;
-                            System.out.println("Iniciando cliente\n");
                             Cliente cli = new Cliente(); //Se crea el cliente
                             cli.startClient();
                         } catch (IOException ex) {
@@ -50,11 +49,11 @@ public class Servidor extends Conexion {
                     task.cancel();
                 } else if (MainServidor.juegoMain.jugadores.size() >= 2 && tic == 10 && MainServidor.juegoMain.jugadores.size() != 6) {
                     repartirCartas();
+                    System.out.println("Juego empezando...");
                     MainServidor.juegoMain.conexion = "l";
                     for (Jugador object : MainServidor.juegoMain.jugadores) {
                         try {
                             Conexion.HOST = object.ip;
-                            System.out.println("Iniciando cliente\n");
                             Cliente cli = new Cliente(); //Se crea el cliente
                             cli.startClient();
                         } catch (IOException ex) {
@@ -76,25 +75,42 @@ public class Servidor extends Conexion {
     {
         asignarCartas();
         try {
+            if (MainServidor.juegoMain.jugadores.isEmpty()){
+               System.out.println("Iniciando servidor\n"); 
+            }
+            
             System.out.println("Esperando jugadores..."); //Esperando conexión
+            
             cs = ss.accept(); //Accept comienza el socket y espera una conexión desde un cliente
             System.out.println("Jugador en línea");
+            
             System.out.println("---------------------------------------");
             ObjectInputStream inObjeto = new ObjectInputStream(cs.getInputStream());
             Juego lc = (Juego) inObjeto.readObject();
-
-            System.out.println(cs.getInetAddress().toString());
             String ip = cs.getInetAddress().toString();
             String replaceAll = ip.replaceAll("/", "");
 
             String name = "";
-            if (lc.conexion.equals("G")) {
-
+            if (lc.conexion.equals("g")) {
+                MainServidor.juegoMain = lc;
+                System.out.println("Jugador :"  + MainServidor.juegoMain.jugadores.get(MainServidor.juegoMain.turno).nickname + " ha ganado la paratida");
+                int c = 0;
+                for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
+                    c++;
+                    if (jugadore.ip.equals(replaceAll)) {
+                        name = jugadore.getNickname();
+                    }
+                }
+                System.out.println("Turno: " + MainServidor.juegoMain.turno);
+                Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);
+                hilo = new Thread(nuevoCliente);
+                hilo.start();
             } else if (lc.conexion.equals("GL")) {
                 MainServidor.juegoMain = lc;
-
+                int c = 0;
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                    System.out.println("Jugador : " + jugadore.nickname + " conectado");
+                    System.out.println("Jugador " +c+": "  + jugadore.nickname + " conectado");
+                    c++;
                     if (jugadore.ip.equals(replaceAll)) {
                         name = jugadore.getNickname();
                     }
@@ -104,6 +120,7 @@ public class Servidor extends Conexion {
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else if (lc.conexion.equals("l")) {
+                
                 MainServidor.juegoMain = lc;
                 if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size() - 1) {
                     MainServidor.juegoMain.turno = 0;
@@ -111,9 +128,10 @@ public class Servidor extends Conexion {
                 } else {
                     MainServidor.juegoMain.turno++;
                 }
-
+                int c = 0;
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                    System.out.println("Jugador : " + jugadore.nickname + " conectado");
+                    System.out.println("Jugador " +c+": "  + jugadore.nickname + " conectado");
+                    c++;
                     if (jugadore.ip.equals(replaceAll)) {
                         name = jugadore.getNickname();
                     }
@@ -123,15 +141,18 @@ public class Servidor extends Conexion {
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else {
+                System.out.println("Jugador " + lc.jugadores.get(0).nickname + " estableciendo conexion");
                 if (MainServidor.juegoMain.jugadores.isEmpty()) {
                     lc.jugadores.get(0).ip = replaceAll;
                     MainServidor.juegoMain = lc;
+                    System.out.println("Iniciando Cronometro");
                     timer.schedule(task, 10, 1000);
                 } else {
                     lc.jugadores.get(0).ip = replaceAll;
                     MainServidor.juegoMain.jugadores.add(lc.jugadores.get(0));
                 }
                 if (MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")) {
+                    System.out.println("Juego empezando...");
                     repartirCartas();
                     MainServidor.juegoMain.conexion = "l";
                     Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);

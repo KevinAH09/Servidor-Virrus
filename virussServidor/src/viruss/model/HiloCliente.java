@@ -31,7 +31,6 @@ public class HiloCliente implements Runnable {
                 try {
                     if (!object.nickname.equals(JugPas)) {
                         Conexion.HOST = object.ip;
-                        System.out.println("Iniciando cliente\n");
                         Cliente cli = new Cliente(); //Se crea el cliente
                         cli.startClient();
                     }

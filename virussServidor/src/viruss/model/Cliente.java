@@ -19,12 +19,8 @@ public class Cliente extends Conexion
         {                  
             
             ObjectOutputStream carta1 = new ObjectOutputStream( cs.getOutputStream());
-            System.out.println("viruss.model.Cliente.startClient()");
             // Se envía el objeto
-            for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                        System.out.println(jugadore.nickname);
-                        System.out.println(jugadore.ip);
-            }
+            
             carta1.writeObject(MainServidor.juegoMain);           
             carta1.close();
             cs.close();//Fin de la conexión
