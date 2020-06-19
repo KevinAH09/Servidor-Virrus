@@ -6,9 +6,6 @@
 package viruss.model;
 import java.io.IOException;
 import static java.lang.Boolean.TRUE;
-import java.util.Scanner;
-import viruss.model.Conexion;
-import viruss.util.Mensaje;
 
 
 //Clase principal que hará uso del servidor
