@@ -74,18 +74,18 @@ public class Servidor extends Conexion {
 
     public void startServer()//Método para iniciar el servidor
     {
-        
+
         try {
-            if (MainServidor.juegoMain.jugadores.isEmpty()){
-               System.out.println("Iniciando servidor\n"); 
+            if (MainServidor.juegoMain.jugadores.isEmpty()) {
+                System.out.println("Iniciando servidor\n");
             }
-            
-            System.out.println("Esperando jugadores..."); //Esperando conexión
-            
+
+            System.out.println("Esperando jugador..."); //Esperando conexión
+
             cs = ss.accept(); //Accept comienza el socket y espera una conexión desde un cliente
-            System.out.println("Jugador en línea");
-            
             System.out.println("---------------------------------------");
+            System.out.println("Jugador en línea");
+
             ObjectInputStream inObjeto = new ObjectInputStream(cs.getInputStream());
             Juego lc = (Juego) inObjeto.readObject();
             String ip = cs.getInetAddress().toString();
@@ -94,7 +94,7 @@ public class Servidor extends Conexion {
             String name = "";
             if (lc.conexion.equals("g")) {
                 MainServidor.juegoMain = lc;
-                System.out.println("Jugador :"  + MainServidor.juegoMain.jugadores.get(MainServidor.juegoMain.turno).nickname + " ha ganado la paratida");
+                System.out.println("Jugador :" + MainServidor.juegoMain.jugadores.get(MainServidor.juegoMain.turno).nickname + " ha ganado la paratida");
                 int c = 0;
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
                     c++;
@@ -110,7 +110,7 @@ public class Servidor extends Conexion {
                 MainServidor.juegoMain = lc;
                 int c = 0;
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                    System.out.println("Jugador " +c+": "  + jugadore.nickname + " conectado");
+                    System.out.println("Jugador " + c + ": " + jugadore.nickname + " conectado");
                     c++;
                     if (jugadore.ip.equals(replaceAll)) {
                         name = jugadore.getNickname();
@@ -121,7 +121,7 @@ public class Servidor extends Conexion {
                 hilo = new Thread(nuevoCliente);
                 hilo.start();
             } else if (lc.conexion.equals("l")) {
-                
+
                 MainServidor.juegoMain = lc;
                 if (MainServidor.juegoMain.turno == MainServidor.juegoMain.jugadores.size() - 1) {
                     MainServidor.juegoMain.turno = 0;
@@ -131,7 +131,7 @@ public class Servidor extends Conexion {
                 }
                 int c = 0;
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
-                    System.out.println("Jugador " +c+": "  + jugadore.nickname + " conectado");
+                    System.out.println("Jugador " + c + ": " + jugadore.nickname + " conectado");
                     c++;
                     if (jugadore.ip.equals(replaceAll)) {
                         name = jugadore.getNickname();
@@ -167,7 +167,6 @@ public class Servidor extends Conexion {
                 }
             }
 
-          
             ss.close();//Se finaliza la conexión con el cliente
             cs.close();
             inObjeto.close();
