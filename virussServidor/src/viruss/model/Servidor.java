@@ -48,6 +48,7 @@ public class Servidor extends Conexion {
                     }
                     task.cancel();
                 } else if (MainServidor.juegoMain.jugadores.size() >= 2 && tic == 10 && MainServidor.juegoMain.jugadores.size() != 6) {
+                    asignarCartas();
                     repartirCartas();
                     System.out.println("Juego empezando...");
                     MainServidor.juegoMain.conexion = "l";
@@ -73,7 +74,7 @@ public class Servidor extends Conexion {
 
     public void startServer()//Método para iniciar el servidor
     {
-        asignarCartas();
+        
         try {
             if (MainServidor.juegoMain.jugadores.isEmpty()){
                System.out.println("Iniciando servidor\n"); 
@@ -153,6 +154,7 @@ public class Servidor extends Conexion {
                 }
                 if (MainServidor.juegoMain.jugadores.size() == 6 && !MainServidor.juegoMain.conexion.equals("w")) {
                     System.out.println("Juego empezando...");
+                    asignarCartas();
                     repartirCartas();
                     MainServidor.juegoMain.conexion = "l";
                     Runnable nuevoCliente = new HiloCliente(name, MainServidor.juegoMain);
