@@ -262,21 +262,21 @@ public class Servidor extends Conexion {
             }
             if (i >= 58 && i < 69)//tratamientos
             {
-//                if (i < 60) {
-//                    lista.add(new Carta(i, "Tratamientos", 1, 160, 110));//Transplante
-//                }
-//                if (i >= 60 && i < 63) {
-//                    lista.add(new Carta(i, "Tratamientos", 2, 160, 110));//Ladrón de órganos
-//                }
-//                if (i >= 63 && i < 66) {
+                if (i < 60) {
+                    lista.add(new Carta(i, "Tratamientos", 1, 160, 110));//Transplante
+                }
+                if (i >= 60 && i < 63) {
+                    lista.add(new Carta(i, "Tratamientos", 2, 160, 110));//Ladrón de órganos
+                }
+                if (i >= 63 && i < 66) {
                     lista.add(new Carta(i, "Tratamientos", 3, 160, 110));//Contagio
-//                }
-//                if (i >= 66 && i < 67) {
-//                    lista.add(new Carta(i, "Tratamientos", 4, 160, 110));//Guante de látex
-//                }
-//                if (i >= 67 && i < 68) {
-//                    lista.add(new Carta(i, "Tratamientos", 5, 160, 110));//Error médico
-//                }
+                }
+                if (i >= 66 && i < 67) {
+                    lista.add(new Carta(i, "Tratamientos", 4, 160, 110));//Guante de látex
+                }
+                if (i >= 67 && i < 68) {
+                    lista.add(new Carta(i, "Tratamientos", 5, 160, 110));//Error médico
+                }
             }
         }
     }
