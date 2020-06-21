@@ -33,7 +33,7 @@ public class Servidor extends Conexion {
             if (!MainServidor.juegoMain.conexion.equals("l")) {
                 tic++;
                 System.out.println(tic + " segundos");
-                if (tic == 30 && MainServidor.juegoMain.jugadores.size() <= 1) {
+                if (tic == 30 && MainServidor.juegoMain.jugadores.size() <= 2) {
                     MainServidor.band = FALSE;
                     System.out.println("Servidor cerrado se agoto el tiempo");
                     MainServidor.juegoMain.conexion = "o";
@@ -47,7 +47,7 @@ public class Servidor extends Conexion {
                         }
                     }
                     task.cancel();
-                } else if (MainServidor.juegoMain.jugadores.size() >= 2 && tic == 30 && MainServidor.juegoMain.jugadores.size() != 6) {
+                } else if (MainServidor.juegoMain.jugadores.size() >= 3 && tic == 30 && MainServidor.juegoMain.jugadores.size() != 6) {
                     asignarCartas();
                     repartirCartas();
                     System.out.println("Juego empezando...");
