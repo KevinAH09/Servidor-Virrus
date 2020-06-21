@@ -94,7 +94,7 @@ public class Servidor extends Conexion {
             String name = "";
             if (lc.conexion.equals("g")) {
                 MainServidor.juegoMain = lc;
-                System.out.println("Jugador :" + MainServidor.juegoMain.jugadores.get(MainServidor.juegoMain.turno).nickname + " ha ganado la paratida");
+                System.out.println("Jugador :" + MainServidor.juegoMain.jugadores.get(MainServidor.juegoMain.turno).nickname + " ha ganado la partida");
                 int c = 0;
                 for (Jugador jugadore : MainServidor.juegoMain.jugadores) {
                     c++;
